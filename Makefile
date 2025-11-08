@@ -9,5 +9,8 @@ $(TARGET): $(SRC)
 run: $(TARGET)
 	./$(TARGET)
 
+test: $(TARGET)
+	./$(TARGET) test.file
+
 clean:
 	rm $(TARGET)

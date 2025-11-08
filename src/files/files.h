@@ -1,6 +1,6 @@
 #ifndef FILES_H
 #define FILES_H
 
-void editor_open();
+void editor_open(char *filename);
 
 #endif
