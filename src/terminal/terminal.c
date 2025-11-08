@@ -168,6 +168,7 @@ int get_cursor_position(int *rows, int *cols) {
 void init_editor() { /* pub */
     E.cx = 0;
     E.cy = 0;
+    E.numrows = 0;
     if (get_window_size(&E.screenrows, &E.screencols) == -1) {
         die("get_window_size");
     }

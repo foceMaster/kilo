@@ -7,11 +7,14 @@ void enable_raw_mode();
 int editor_read_key(); // input.c
 void init_editor();
 
-%:include <termios.h> // orig_termios
+%:include <termios.h>          // orig_termios
+%:include "../output/output.h" // erow
 struct editor_config {
     int cx, cy; // Cursor position
     int screenrows;
     int screencols;
+    int numrows;
+    erow row;
     struct termios orig_termios;
 };
 extern struct editor_config E;
