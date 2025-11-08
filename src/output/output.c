@@ -50,11 +50,11 @@ void editor_draw_rows(struct abuf *ab) { /* private */
                 ab_append(ab, "~", 1);
             }
         } else {
-            int len = E.row.size;
+            int len = E.row[y].size;
             if (len > E.screencols) {
                 len = E.screencols;
             }
-            ab_append(ab, E.row.chars, len);
+            ab_append(ab, E.row[y].chars, len);
         }
 
         ab_append(ab, "\x1b[K", 3); // Clear right of cursor; this line

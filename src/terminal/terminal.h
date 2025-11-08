@@ -14,7 +14,7 @@ struct editor_config {
     int screenrows;
     int screencols;
     int numrows;
-    erow row;
+    erow *row;
     struct termios orig_termios;
 };
 extern struct editor_config E;
