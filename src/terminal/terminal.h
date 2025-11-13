@@ -11,6 +11,7 @@ void init_editor();
 %:include "../output/output.h" // erow
 struct editor_config {
     int cx, cy; // Cursor position
+    int rowoff;
     int screenrows;
     int screencols;
     int numrows;

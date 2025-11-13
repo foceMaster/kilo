@@ -8,6 +8,9 @@
 
 void editor_refresh_screen() { /* pub */
     void editor_draw_rows(struct abuf * ab);
+    void editor_scroll();
+
+    editor_scroll();
     struct abuf ab = ABUF_INIT;
 
     ab_append(&ab, "\x1b[?25l", 6); // Hide cursor
@@ -28,7 +31,8 @@ void editor_refresh_screen() { /* pub */
 
 void editor_draw_rows(struct abuf *ab) { /* private */
     for (int y = 0; y < E.screenrows; y++) {
-        if (y >= E.numrows) {
+        int filerow = y + E.rowoff;
+        if (filerow >= E.numrows) {
             if (E.numrows == 0 && y == E.screenrows / 3) {
                 char welcome[80];
                 int welcomelen =
@@ -50,16 +54,25 @@ void editor_draw_rows(struct abuf *ab) { /* private */
                 ab_append(ab, "~", 1);
             }
         } else {
-            int len = E.row[y].size;
+            int len = E.row[filerow].size;
             if (len > E.screencols) {
                 len = E.screencols;
             }
-            ab_append(ab, E.row[y].chars, len);
+            ab_append(ab, E.row[filerow].chars, len);
         }
 
         ab_append(ab, "\x1b[K", 3); // Clear right of cursor; this line
         if (y != E.screenrows - 1) {
             ab_append(ab, "\r\n", 2);
         }
+    }
+}
+
+void editor_scroll() { /* private */
+    if (E.cy < E.rowoff) {
+        E.rowoff = E.cy;
+    }
+    if (E.cy >= E.rowoff + E.screenrows) {
+        E.rowoff = E.cy - E.screenrows + 1;
     }
 }

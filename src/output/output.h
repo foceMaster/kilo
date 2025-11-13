@@ -7,5 +7,6 @@ typedef struct {
 } erow;
 
 void editor_refresh_screen();
+void editor_scroll();
 
 #endif
