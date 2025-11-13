@@ -20,7 +20,7 @@ void editor_refresh_screen() { /* pub */
 
     char buf[32];
     // Move cursor to positions stored in E, add one because E is zero-indexed
-    snprintf(buf, sizeof(buf), "\x1b[%d;%dH", E.cy + 1, E.cx + 1);
+    snprintf(buf, sizeof(buf), "\x1b[%d;%dH", E.cy - E.rowoff + 1, E.cx + 1);
     ab_append(&ab, buf, strlen(buf));
 
     ab_append(&ab, "\x1b[?25h", 6); // Show cursor
