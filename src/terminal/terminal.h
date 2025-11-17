@@ -12,6 +12,7 @@ void init_editor();
 struct editor_config {
     int cx, cy; // Cursor position
     int rowoff;
+    int coloff;
     int screenrows;
     int screencols;
     int numrows;

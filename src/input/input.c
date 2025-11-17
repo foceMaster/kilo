@@ -40,6 +40,13 @@ void editor_process_keypress() { /* pub */
 }
 
 void editor_move_cursor(int key) {
+    erow *row;
+    if (E.cy >= E.numrows) {
+        row = NULL;
+    } else {
+        row = &E.row[E.cy];
+    }
+
     switch (key) {
     case ARROW_LEFT:
         if (E.cx != 0) {
@@ -47,7 +54,7 @@ void editor_move_cursor(int key) {
         }
         break;
     case ARROW_RIGHT:
-        if (E.cx != E.screencols) {
+        if (row && E.cx < row->size) {
             E.cx++;
         }
         break;
@@ -61,5 +68,15 @@ void editor_move_cursor(int key) {
             E.cy++;
         }
         break;
+    }
+
+    if (E.cy >= E.numrows) {
+        row = NULL;
+    } else {
+        row = &E.row[E.cy];
+    }
+    int rowlen = (row) ? row->size : 0;
+    if (E.cx > rowlen) {
+        E.cx = rowlen;
     }
 }

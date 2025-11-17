@@ -20,7 +20,8 @@ void editor_refresh_screen() { /* pub */
 
     char buf[32];
     // Move cursor to positions stored in E, add one because E is zero-indexed
-    snprintf(buf, sizeof(buf), "\x1b[%d;%dH", E.cy - E.rowoff + 1, E.cx + 1);
+    snprintf(buf, sizeof(buf), "\x1b[%d;%dH", E.cy - E.rowoff + 1,
+             E.cx - E.coloff + 1);
     ab_append(&ab, buf, strlen(buf));
 
     ab_append(&ab, "\x1b[?25h", 6); // Show cursor
@@ -54,11 +55,16 @@ void editor_draw_rows(struct abuf *ab) { /* private */
                 ab_append(ab, "~", 1);
             }
         } else {
-            int len = E.row[filerow].size;
+            int len = E.row[filerow].size - E.coloff;
+            if (len < 0) {
+                len = 0;
+            }
             if (len > E.screencols) {
                 len = E.screencols;
             }
-            ab_append(ab, E.row[filerow].chars, len);
+            ab_append(
+                ab, &E.row[filerow].chars[E.coloff] /* Start on coloff index */,
+                len);
         }
 
         ab_append(ab, "\x1b[K", 3); // Clear right of cursor; this line
@@ -74,5 +80,11 @@ void editor_scroll() { /* private */
     }
     if (E.cy >= E.rowoff + E.screenrows) {
         E.rowoff = E.cy - E.screenrows + 1;
+    }
+    if (E.cx < E.coloff) {
+        E.coloff = E.cx;
+    }
+    if (E.cx >= E.coloff + E.screencols) {
+        E.coloff = E.cx - E.screencols + 1;
     }
 }
